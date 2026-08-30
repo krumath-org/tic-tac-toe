@@ -30,7 +30,7 @@ export const DIFFICULTIES: Difficulty[] = [
 
 const CORNERS = [0, 2, 6, 8];
 
-const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]!;
 
 function minimax(board: Board, current: Player, me: Player, depth: number, maxDepth: number): number {
   const win = getWinner(board);
