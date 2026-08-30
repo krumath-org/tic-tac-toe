@@ -142,3 +142,24 @@
     color: var(--color-foreground);
   }
 }
+
+@keyframes ttt-mark-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ttt-mark {
+  animation: ttt-mark-in 140ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ttt-mark {
+    animation: none;
+  }
+}
