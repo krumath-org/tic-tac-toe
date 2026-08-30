@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GamesTicTacToeRouteImport } from './routes/games/tic-tac-toe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GamesTicTacToeRoute = GamesTicTacToeRouteImport.update({
+  id: '/games/tic-tac-toe',
+  path: '/games/tic-tac-toe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/games/tic-tac-toe': typeof GamesTicTacToeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/games/tic-tac-toe': typeof GamesTicTacToeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/games/tic-tac-toe': typeof GamesTicTacToeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/games/tic-tac-toe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/games/tic-tac-toe'
+  id: '__root__' | '/' | '/games/tic-tac-toe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GamesTicTacToeRoute: typeof GamesTicTacToeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/games/tic-tac-toe': {
+      id: '/games/tic-tac-toe'
+      path: '/games/tic-tac-toe'
+      fullPath: '/games/tic-tac-toe'
+      preLoaderRoute: typeof GamesTicTacToeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GamesTicTacToeRoute: GamesTicTacToeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
