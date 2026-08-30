@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   applyMove,
@@ -10,7 +10,7 @@ import {
   type Board,
   type Player,
 } from "@/lib/tic-tac-toe/engine";
-import { DIFFICULTIES, selectMove, type Difficulty } from "@/lib/tic-tac-toe/ai";
+import { BOARDS, DIFFICULTIES, selectMove, type Difficulty } from "@/lib/tic-tac-toe/ai";
 import { cn } from "@/lib/utils";
 
 const TITLE = "Tic-Tac-Toe | Krumath";
@@ -31,17 +31,6 @@ export const Route = createFileRoute("/games/tic-tac-toe")({
 });
 
 const STORAGE_KEY = "krumath.ttt";
-const CELL_NAMES = [
-  "Top left",
-  "Top centre",
-  "Top right",
-  "Middle left",
-  "Centre",
-  "Middle right",
-  "Bottom left",
-  "Bottom centre",
-  "Bottom right",
-];
 
 type Score = { you: number; draw: number; ai: number };
 const ZERO: Score = { you: 0, draw: 0, ai: 0 };
@@ -62,13 +51,18 @@ function loadPrefs(): { difficulty: Difficulty; score: Score } {
   }
 }
 
+const cellName = (i: number, size: number) =>
+  `Row ${Math.floor(i / size) + 1}, column ${(i % size) + 1}`;
+
 function TicTacToePage() {
   const human: Player = "X";
   const ai: Player = other(human);
 
-  const [board, setBoard] = useState<Board>(emptyBoard);
-  const [turn, setTurn] = useState<Player>(human);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
+  const config = BOARDS[difficulty];
+
+  const [board, setBoard] = useState<Board>(() => emptyBoard(BOARDS.medium));
+  const [turn, setTurn] = useState<Player>(human);
   const [score, setScore] = useState<Score>(ZERO);
   const [thinking, setThinking] = useState(false);
   const gameId = useRef(0);
@@ -78,7 +72,11 @@ function TicTacToePage() {
     const prefs = loadPrefs();
     setDifficulty(prefs.difficulty);
     setScore(prefs.score);
-  }, []);
+    setBoard(emptyBoard(BOARDS[prefs.difficulty]));
+    setTurn(human);
+    scored.current = false;
+    gameId.current += 1;
+  }, [human]);
 
   useEffect(() => {
     try {
@@ -88,7 +86,7 @@ function TicTacToePage() {
     }
   }, [difficulty, score]);
 
-  const status = getStatus(board, turn);
+  const status = getStatus(board, turn, config);
   const over = status.kind !== "playing";
 
   // Record result once per finished game.
@@ -112,33 +110,46 @@ function TicTacToePage() {
     const t = setTimeout(() => {
       if (id !== gameId.current) return;
       setBoard((b) => {
-        if (getStatus(b, ai).kind !== "playing") return b;
+        if (getStatus(b, ai, config).kind !== "playing") return b;
         const move = selectMove(b, ai, difficulty);
-        if (move === null || !isValidMove(b, move)) return b;
+        if (move === null || !isValidMove(b, move, config)) return b;
         return applyMove(b, move, ai);
       });
       setTurn(human);
       setThinking(false);
     }, 280);
     return () => clearTimeout(t);
-  }, [turn, over, ai, human, difficulty]);
+  }, [turn, over, ai, human, difficulty, config]);
 
   const play = useCallback(
     (i: number) => {
-      if (thinking || turn !== human || !isValidMove(board, i)) return;
+      if (thinking || turn !== human || !isValidMove(board, i, config)) return;
       setBoard(applyMove(board, i, human));
       setTurn(ai);
     },
-    [board, thinking, turn, human, ai],
+    [board, thinking, turn, human, ai, config],
   );
 
-  const reset = useCallback(() => {
-    gameId.current += 1;
-    scored.current = false;
-    setThinking(false);
-    setBoard(emptyBoard());
-    setTurn(human);
-  }, [human]);
+  const startGame = useCallback(
+    (d: Difficulty) => {
+      gameId.current += 1;
+      scored.current = false;
+      setThinking(false);
+      setBoard(emptyBoard(BOARDS[d]));
+      setTurn(human);
+    },
+    [human],
+  );
+
+  const reset = useCallback(() => startGame(difficulty), [startGame, difficulty]);
+
+  const changeDifficulty = useCallback(
+    (d: Difficulty) => {
+      setDifficulty(d);
+      startGame(d);
+    },
+    [startGame],
+  );
 
   const winLine = status.kind === "won" ? status.line : [];
   const message =
@@ -152,14 +163,28 @@ function TicTacToePage() {
           ? "AI thinking…"
           : "Your turn";
 
+  const gridStyle = useMemo(
+    () => ({ gridTemplateColumns: `repeat(${config.size}, minmax(0, 1fr))` }),
+    [config.size],
+  );
+  const markSize =
+    config.size <= 3
+      ? "text-4xl sm:text-5xl"
+      : config.size <= 5
+        ? "text-2xl sm:text-3xl"
+        : "text-lg sm:text-2xl";
+  const gap = config.size <= 5 ? "gap-2" : "gap-1";
+  const radius = config.size <= 5 ? "rounded-xl" : "rounded-md";
+
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center gap-8 px-5 py-12">
       <h1 className="text-2xl font-semibold tracking-tight">Tic-Tac-Toe</h1>
 
       <div
         role="grid"
-        aria-label="Tic-Tac-Toe board"
-        className="grid w-full grid-cols-3 gap-2"
+        aria-label={`Tic-Tac-Toe board, ${config.size} by ${config.size}, ${config.winLength} in a row to win`}
+        style={gridStyle}
+        className={cn("grid w-full", gap)}
       >
         {board.map((cell, i) => (
           <button
@@ -168,9 +193,11 @@ function TicTacToePage() {
             role="gridcell"
             onClick={() => play(i)}
             disabled={over || cell !== null}
-            aria-label={`${CELL_NAMES[i]}, ${cell ?? "empty"}`}
+            aria-label={`${cellName(i, config.size)}, ${cell ?? "empty"}`}
             className={cn(
-              "ttt-cell flex aspect-square items-center justify-center rounded-xl border border-border bg-card text-4xl font-semibold text-foreground transition-colors sm:text-5xl",
+              "ttt-cell flex aspect-square items-center justify-center border border-border bg-card font-semibold text-foreground transition-colors",
+              radius,
+              markSize,
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               !cell && !over && "hover:bg-accent",
               winLine.includes(i) && "border-primary bg-accent",
@@ -203,12 +230,12 @@ function TicTacToePage() {
           <span className="sr-only">Difficulty</span>
           <select
             value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            onChange={(e) => changeDifficulty(e.target.value as Difficulty)}
             className="cursor-pointer rounded-md bg-transparent px-1 py-0.5 capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {DIFFICULTIES.map((d) => (
               <option key={d} value={d} className="capitalize">
-                {d}
+                {d} · {BOARDS[d].size}×{BOARDS[d].size}
               </option>
             ))}
           </select>
