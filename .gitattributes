@@ -1,0 +1,15 @@
+# Normalize all text files to LF.
+# The repo is formatted for LF (prettier defaults); on Windows, a global
+# core.autocrlf=true would otherwise check files out as CRLF and make
+# `npm run lint` fail with thousands of "Delete ␍" errors.
+* text=auto eol=lf
+
+# Binary assets — never convert or diff.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.woff  binary
+*.woff2 binary
