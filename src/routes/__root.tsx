@@ -10,22 +10,36 @@ import {
 import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { AuthProvider } from "@/features/auth/AuthProvider";
+import { AuthGate } from "@/features/auth/AuthGate";
+import { ProjectHeader } from "@/features/nav/ProjectHeader";
+import { LocaleProvider } from "@/lib/i18n/context";
+import { translate } from "@/lib/i18n/dictionary";
+import { useSafeTranslation } from "@/lib/i18n/hooks";
+import { BASE_PATH } from "@/lib/krumath";
+import { ThemeProvider } from "@/lib/theme/context";
+import { THEME_INIT_SCRIPT } from "@/lib/theme/theme-context";
+
+const BASE_URL = import.meta.env.BASE_URL;
+
+// Server-rendered fallback meta (English): the locale cannot be known before hydration.
+const ROOT_TITLE = translate("en", "meta.rootTitle");
+const ROOT_DESCRIPTION = translate("en", "meta.rootDescription");
 
 function NotFoundComponent() {
+  const t = useSafeTranslation();
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex flex-1 items-center justify-center px-4 py-16">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("error.notFoundTitle")}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("error.notFoundBody")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {t("error.goHome")}
           </Link>
         </div>
       </div>
@@ -36,16 +50,15 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const t = useSafeTranslation();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex flex-1 items-center justify-center px-4 py-16">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {t("error.loadTitle")}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("error.loadBody")}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -54,13 +67,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {t("error.tryAgain")}
           </button>
           <a
-            href="/"
+            href={`${BASE_PATH}/`}
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            {t("error.goHome")}
           </a>
         </div>
       </div>
@@ -73,11 +86,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Krumath" },
-      { name: "description", content: "Interactive games and learning tools from Krumath." },
-      { name: "author", content: "Krumath" },
-      { property: "og:title", content: "Krumath" },
-      { property: "og:description", content: "Interactive games and learning tools from Krumath." },
+      { title: ROOT_TITLE },
+      { name: "description", content: ROOT_DESCRIPTION },
+      { name: "author", content: "KruMath" },
+      { property: "og:title", content: ROOT_TITLE },
+      { property: "og:description", content: ROOT_DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -86,9 +99,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        // Kantumruy Pro is the Khmer face KruMath standardises on; it also carries the
+        // Latin glyphs, so Khmer mode renders the whole UI in it (see styles.css).
+        href: "https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap",
+      },
+      { rel: "icon", href: `${BASE_URL}favicon.svg`, type: "image/svg+xml" },
+      { rel: "icon", href: `${BASE_URL}favicon.ico`, type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: `${BASE_URL}favicon.png` },
     ],
   }),
   shellComponent: RootShell,
@@ -101,6 +122,8 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Runs before first paint so the stored/system theme is already applied. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
@@ -116,8 +139,23 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ThemeProvider>
+        <LocaleProvider>
+          <AuthProvider>
+            {/* dvh, not vh: the game should fill the visible screen even while
+                mobile browser chrome is showing. */}
+            <div className="flex min-h-dvh flex-col">
+              <ProjectHeader />
+              <div className="flex min-h-0 flex-1 flex-col">
+                {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+                <AuthGate>
+                  <Outlet />
+                </AuthGate>
+              </div>
+            </div>
+          </AuthProvider>
+        </LocaleProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

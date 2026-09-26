@@ -1,9 +1,22 @@
+import { translate } from "@/lib/i18n/dictionary";
+import { KRUMATH_HOME_URL } from "@/lib/krumath";
+
+/**
+ * Plain HTML fallback served when SSR fails before React can render, so it cannot
+ * use the component tree or the locale provider. Copy comes from the English
+ * dictionary so it stays in step with the app (see docs/krumath-integration.md).
+ */
 export function renderErrorPage(): string {
+  const title = translate("en", "error.loadTitle");
+  const body = translate("en", "error.loadBody");
+  const tryAgain = translate("en", "error.tryAgain");
+  const goToKruMath = translate("en", "error.goToKruMath");
+
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>This page didn't load</title>
+    <title>${title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body { font: 15px/1.5 system-ui, -apple-system, sans-serif; background: #fafafa; color: #111; display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
@@ -18,11 +31,11 @@ export function renderErrorPage(): string {
   </head>
   <body>
     <div class="card">
-      <h1>This page didn't load</h1>
-      <p>Something went wrong on our end. You can try refreshing or head back home.</p>
+      <h1>${title}</h1>
+      <p>${body}</p>
       <div class="actions">
-        <button class="primary" onclick="location.reload()">Try again</button>
-        <a class="secondary" href="/">Go home</a>
+        <button class="primary" onclick="location.reload()">${tryAgain}</button>
+        <a class="secondary" href="${KRUMATH_HOME_URL}">${goToKruMath}</a>
       </div>
     </div>
   </body>

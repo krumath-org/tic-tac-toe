@@ -1,4 +1,4 @@
-# Krumath Games: Tic-Tac-Toe
+# KruMath Games: Tic-Tac-Toe
 
 You are a senior frontend engineer, UI/UX designer, and game-development engineer.
 
@@ -14,7 +14,7 @@ https://krumath.com
 
 DO NOT immediately start coding.
 
-First inspect the existing Krumath website/codebase and understand:
+First inspect the existing KruMath website/codebase and understand:
 
 - Framework and technology stack
 
@@ -52,11 +52,11 @@ First inspect the existing Krumath website/codebase and understand:
 
 - Existing coding conventions
 
-The new Tic-Tac-Toe game must feel like a native Krumath feature.
+The new Tic-Tac-Toe game must feel like a native KruMath feature.
 
 Do NOT redesign unrelated parts of the website.
 
-Do NOT introduce a new UI framework if Krumath already has one.
+Do NOT introduce a new UI framework if KruMath already has one.
 
 Do NOT introduce unnecessary dependencies.
 
@@ -144,7 +144,7 @@ Preferred route:
 
 /games/tic-tac-toe
 
-If Krumath uses another routing convention, follow the existing convention.
+If KruMath uses another routing convention, follow the existing convention.
 
 Primary mode:
 
@@ -238,9 +238,9 @@ The ideal page is approximately:
 
              [ Play Again ]
 
-Keep the actual implementation visually consistent with Krumath.
+Keep the actual implementation visually consistent with KruMath.
 
-Do not literally reproduce this layout if Krumath's existing design suggests a better solution.
+Do not literally reproduce this layout if KruMath's existing design suggests a better solution.
 
 The important principle is minimalism.
 
@@ -332,13 +332,13 @@ Instead:
 
 2. Verify its licence.
 
-3. Verify compatibility with the Krumath stack.
+3. Verify compatibility with the KruMath stack.
 
 4. Determine whether the algorithm is still appropriate.
 
 5. Reuse or adapt only the relevant game/AI logic.
 
-If using an external package would add unnecessary complexity, implement a small clean Minimax engine directly inside the Krumath codebase using the open-source implementation as a reference.
+If using an external package would add unnecessary complexity, implement a small clean Minimax engine directly inside the KruMath codebase using the open-source implementation as a reference.
 
 The final result should be lightweight and maintainable.
 
@@ -590,7 +590,7 @@ Then provide:
 
 Prefer an inline result state.
 
-Avoid large modal dialogs unless the existing Krumath design system strongly suggests them.
+Avoid large modal dialogs unless the existing KruMath design system strongly suggests them.
 
 ==================================================
 
@@ -702,7 +702,7 @@ Avoid unnecessary:
 
 - Excessive borders
 
-Follow Krumath's existing visual language.
+Follow KruMath's existing visual language.
 
 ==================================================
 
@@ -824,17 +824,17 @@ prefers-reduced-motion
 
 ==================================================
 
-Do NOT add sound unless Krumath already has an appropriate sound system.
+Do NOT add sound unless KruMath already has an appropriate sound system.
 
 Sound is not necessary for this feature.
 
 ==================================================
 
-21. Krumath DESIGN SYSTEM
+21. KruMath DESIGN SYSTEM
 
 ==================================================
 
-The game must use the existing Krumath design system.
+The game must use the existing KruMath design system.
 
 Reuse where possible:
 
@@ -858,7 +858,7 @@ Reuse where possible:
 
 Do not invent a separate design language.
 
-The finished game should look as though it was designed specifically for Krumath.
+The finished game should look as though it was designed specifically for KruMath.
 
 ==================================================
 
@@ -866,7 +866,7 @@ The finished game should look as though it was designed specifically for Krumath
 
 ==================================================
 
-Use the existing Krumath state-management approach.
+Use the existing KruMath state-management approach.
 
 If local component state is sufficient, keep it local.
 
@@ -920,7 +920,7 @@ Add appropriate metadata.
 
 Title:
 
-Tic-Tac-Toe | Krumath
+Tic-Tac-Toe | KruMath
 
 Description:
 
@@ -1098,7 +1098,7 @@ Also check:
 
 - No broken routes
 
-- No broken existing Krumath functionality
+- No broken existing KruMath functionality
 
 ==================================================
 
@@ -1128,7 +1128,7 @@ Ask:
 
 - Does anything look like a generic template?
 
-- Does it feel native to Krumath?
+- Does it feel native to KruMath?
 
 - Is the page visually calm?
 
@@ -1244,7 +1244,7 @@ But avoid structuring the code in a way that makes future expansion unnecessaril
 
 ==================================================
 
-Integrate the game into the existing Krumath Games area.
+Integrate the game into the existing KruMath Games area.
 
 If a Games page exists:
 
@@ -1254,7 +1254,7 @@ Tic-Tac-Toe
 
 If no Games section exists:
 
-Create the smallest appropriate integration consistent with Krumath's current navigation.
+Create the smallest appropriate integration consistent with KruMath's current navigation.
 
 Do not modify unrelated navigation.
 
@@ -1316,7 +1316,7 @@ Confirm:
 
 15. Any open-source code has a compatible licence.
 
-16. Krumath's existing design system is respected.
+16. KruMath's existing design system is respected.
 
 17. Existing functionality is unaffected.
 
@@ -1334,7 +1334,7 @@ If you find unnecessary elements during this audit, remove them.
 
 ==================================================
 
-Actually implement the feature in the Krumath codebase.
+Actually implement the feature in the KruMath codebase.
 
 Do not merely provide sample code.
 
@@ -1380,3 +1380,43 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+The project is mounted under `/tic-tac-toe`, so the dev server serves it at
+`http://localhost:8081/tic-tac-toe/` (the port may vary).
+
+## KruMath integration
+
+This project is part of [krumath.com](https://krumath.com) and runs at
+`https://krumath.com/tic-tac-toe`. It reuses the shared KruMath Supabase project
+and authentication.
+
+- Worker name: `krumath-org-tic-tac-toe`
+- Cloudflare route: `krumath.com/tic-tac-toe* -> krumath-org-tic-tac-toe`
+- Auth model: hard gate (a valid, non-anonymous KruMath Supabase session is
+  required)
+- Languages: English and Khmer (EN/ខ្មែរ toggle in the header)
+
+Environment variables (see `.env.example`, put real values in `.env.local`):
+
+```text
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+VITE_DEV_AUTH_BYPASS=false
+```
+
+Only the Supabase **anon** (public) key is used — never `service_role`.
+`VITE_DEV_AUTH_BYPASS=true` skips the gate in local development and has no
+effect in production builds.
+
+### Deploy
+
+```sh
+npm run deploy
+```
+
+This builds with the current env, injects the `krumath.com/tic-tac-toe*` route,
+and uploads Worker `krumath-org-tic-tac-toe` with `wrangler`. It requires a
+Cloudflare login that has access to the `krumath.com` zone (`npx wrangler login`).
+
+See [docs/krumath-integration.md](docs/krumath-integration.md) for the full
+integration contract, architecture, and verification status.

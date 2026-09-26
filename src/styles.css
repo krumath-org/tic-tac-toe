@@ -26,6 +26,9 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Kantumruy Pro is the Khmer face KruMath standardises on. Registered here so the
+     `font-khmer` utility exists; `html[lang="km"]` applies it to the whole UI. */
+  --font-khmer: "Kantumruy Pro", "Noto Sans Khmer", ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -34,6 +37,10 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  /* KruMath brand blue (#2563EB). Used by the brand link and result accents. */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-hover: var(--brand-hover);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -69,8 +76,13 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
+  /* KruMath blue: #2563EB = oklch(0.546 0.215 262.881). Primary, focus ring and
+     the header brand link all use it so the game reads as part of KruMath. */
+  --brand: oklch(0.546 0.215 262.881);
+  --brand-foreground: oklch(0.984 0.003 247.858);
+  --brand-hover: oklch(0.488 0.217 264.376);
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
@@ -81,7 +93,7 @@
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --ring: var(--brand);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -104,8 +116,12 @@
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
+  /* Lighter KruMath blue (#3B82F6) for sufficient contrast on the dark surface. */
+  --brand: oklch(0.623 0.188 259.815);
+  --brand-foreground: oklch(0.205 0.042 265.755);
+  --brand-hover: oklch(0.714 0.143 254.624);
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
   --muted: oklch(0.279 0.041 260.031);
@@ -116,7 +132,7 @@
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --ring: var(--brand);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -133,6 +149,21 @@
 }
 
 @layer base {
+  /* 18px base (up from the browser's 16px) makes the whole UI easier to read.
+     Tailwind sizes and spacing are rem-based, so the layout scales in step. */
+  html {
+    font-size: 112.5%;
+  }
+
+  /* Native controls, scrollbars and the browser chrome follow the active theme. */
+  :root {
+    color-scheme: light;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -140,6 +171,14 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+
+  /* Khmer mode: Kantumruy Pro paints every string. `<html lang>` is kept in sync by the
+     LocaleProvider, so no per-component font wiring is needed. The taller line-height
+     keeps Khmer's stacked vowel signs from clipping. */
+  html[lang="km"] body {
+    font-family: var(--font-khmer);
+    line-height: 1.6;
   }
 }
 

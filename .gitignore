@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# Local env files — never commit real values.
+.env
+.env.local
+.env.*
+!.env.example
+
 # Lockfiles — this repo uses bun.lock (npm still works per the README).
 package-lock.json
 

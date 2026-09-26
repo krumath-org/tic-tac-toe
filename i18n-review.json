@@ -1,0 +1,297 @@
+{
+  "_about": "English source strings for the KruMath Tic-Tac-Toe project (krumath.com/tic-tac-toe). Fill in the \"km\" field for every string, then send this file back to have the translations applied in the codebase. The \"en\" values are the current (or proposed) copy; \"where\" explains where/how the string is used so it can be translated with the right tone.",
+  "_placeholders": {
+    "{size}": "board width/height in cells (3-8)",
+    "{winLength}": "marks in a row required to win (3-5)",
+    "{row}": "1-based row number of a board cell",
+    "{column}": "1-based column number of a board cell",
+    "{value}": "the mark already in a cell: X, O, or the translated word for an empty cell",
+    "{name}": "a difficulty name (Beginner, Easy, Medium, Hard, Expert, Impossible)",
+    "{you}": "the player's score, a number",
+    "{draw}": "the number of drawn games, a number",
+    "{ai}": "the computer's score, a number"
+  },
+  "_do_not_translate": [
+    "KruMath (brand)",
+    "GitHub (brand)",
+    "X and O (player marks)",
+    "Tic-Tac-Toe (game name — confirm whether Khmer users should see a Khmer name instead)"
+  ],
+  "_decisions_needed": [
+    "The Donate button does not exist yet. Other KruMath games label it \"គាំទ្រ KruMath\" / \"Support KruMath\" (maze-rank), \"បរិច្ចាគ\" (khmer-type-master), or \"Pay me a coffee!\" (remember-face) and link to https://krumath.com/pricing. \"Support KruMath\" is proposed below.",
+    "The EN/KM language toggle does not exist yet, so no Khmer text is rendered anywhere today. The toggle is a UI change, not only a string change.",
+    "Khmer mode: confirm whether runtime numbers stay Western digits (as in remember-face) or Khmer numerals."
+  ],
+  "strings": {
+    "meta.title": {
+      "where": "Browser tab / Open Graph title for the game page.",
+      "en": "Tic-Tac-Toe | KruMath",
+      "km": ""
+    },
+    "meta.description": {
+      "where": "Meta description for the game page (shown in search results and link previews).",
+      "en": "Play Tic-Tac-Toe online against the computer.",
+      "km": ""
+    },
+    "meta.rootTitle": {
+      "where": "Fallback app title set in the root route before the game page overrides it.",
+      "en": "KruMath",
+      "km": ""
+    },
+    "meta.rootDescription": {
+      "where": "Fallback meta description set in the root route.",
+      "en": "Interactive games and learning tools from KruMath.",
+      "km": ""
+    },
+    "game.title": {
+      "where": "The single main heading above the board.",
+      "en": "Tic-Tac-Toe",
+      "km": ""
+    },
+    "game.status.yourTurn": {
+      "where": "Status line under the board while the player is to move.",
+      "en": "Your turn",
+      "km": ""
+    },
+    "game.status.thinking": {
+      "where": "Status line under the board while the computer is deciding. Uses an ellipsis.",
+      "en": "AI thinking…",
+      "km": ""
+    },
+    "game.status.youWin": {
+      "where": "Status line under the board when the player wins.",
+      "en": "You win",
+      "km": ""
+    },
+    "game.status.aiWins": {
+      "where": "Status line under the board when the computer wins.",
+      "en": "AI wins",
+      "km": ""
+    },
+    "game.status.draw": {
+      "where": "Status line under the board when the game ends in a draw. Keep it short.",
+      "en": "Draw",
+      "km": ""
+    },
+    "game.playAgain": {
+      "where": "Primary button under the status line; resets the board for a new game.",
+      "en": "Play Again",
+      "km": ""
+    },
+    "result.youWin": {
+      "where": "Large heading on the game-over card when the player wins. Distinct from the short game.status.youWin.",
+      "en": "You Win!",
+      "km": ""
+    },
+    "result.youLose": {
+      "where": "Large heading on the game-over card when the computer wins.",
+      "en": "You Lose",
+      "km": ""
+    },
+    "result.draw": {
+      "where": "Large heading on the game-over card when the game is a draw.",
+      "en": "Draw",
+      "km": ""
+    },
+    "result.summary": {
+      "where": "Score line on the game-over card. {you}, {ai} and {draw} are numbers.",
+      "en": "You {you} · AI {ai} · Draw {draw}",
+      "km": ""
+    },
+    "game.score.summary": {
+      "where": "Small score line under the board. The middle dot (·) is part of the design and can be changed.",
+      "en": "You {you} · Draw {draw} · AI {ai}",
+      "km": ""
+    },
+    "game.difficulty.label": {
+      "where": "Screen-reader label for the difficulty dropdown. Never seen visually.",
+      "en": "Difficulty",
+      "km": ""
+    },
+    "game.difficulty.option": {
+      "where": "Each option in the difficulty dropdown: the difficulty name plus its board size. {name} is a translated difficulty name, {size} is a number.",
+      "en": "{name} · {size}×{size}",
+      "km": ""
+    },
+    "difficulty.beginner": {
+      "where": "Difficulty level name (weakest). Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Beginner",
+      "km": ""
+    },
+    "difficulty.easy": {
+      "where": "Difficulty level name. Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Easy",
+      "km": ""
+    },
+    "difficulty.medium": {
+      "where": "Difficulty level name (the default). Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Medium",
+      "km": ""
+    },
+    "difficulty.hard": {
+      "where": "Difficulty level name. Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Hard",
+      "km": ""
+    },
+    "difficulty.expert": {
+      "where": "Difficulty level name. Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Expert",
+      "km": ""
+    },
+    "difficulty.impossible": {
+      "where": "Difficulty level name (strongest, unbeatable). Shown in the dropdown and reused by game.difficulty.option.",
+      "en": "Impossible",
+      "km": ""
+    },
+    "board.label": {
+      "where": "Screen-reader description of the whole board. {size} and {winLength} are numbers.",
+      "en": "Tic-Tac-Toe board, {size} by {size}, {winLength} in a row to win",
+      "km": ""
+    },
+    "board.cell": {
+      "where": "Screen-reader label for one board cell. {value} is X, O, or board.empty. {row}/{column} are 1-based numbers.",
+      "en": "Row {row}, column {column}, {value}",
+      "km": ""
+    },
+    "board.empty": {
+      "where": "Word for an empty cell, substituted into board.cell as {value}.",
+      "en": "empty",
+      "km": ""
+    },
+    "nav.home": {
+      "where": "Visible label of the Home button at the top-left; links to krumath.com/home.",
+      "en": "KruMath",
+      "km": ""
+    },
+    "nav.homeAria": {
+      "where": "Screen-reader label of the Home button. Never seen visually.",
+      "en": "KruMath home",
+      "km": ""
+    },
+    "nav.github": {
+      "where": "Tooltip / screen-reader label of the GitHub icon button; opens the project repo in a new tab.",
+      "en": "View source on GitHub",
+      "km": ""
+    },
+    "nav.donate": {
+      "where": "NEW button (missing today). Donation / support icon button (heart) linking to krumath.com/pricing. Used as tooltip and screen-reader label, so keep it short.",
+      "en": "Support KruMath",
+      "km": ""
+    },
+    "nav.language": {
+      "where": "Screen-reader label for the EN/KM language toggle group. Never seen visually.",
+      "en": "Language",
+      "km": ""
+    },
+    "lang.en": {
+      "where": "Visible label of the English option in the language toggle. Usually left as-is.",
+      "en": "EN",
+      "km": "EN"
+    },
+    "lang.km": {
+      "where": "Visible label of the Khmer option in the language toggle. Usually left as-is.",
+      "en": "ខ្មែរ",
+      "km": "ខ្មែរ"
+    },
+    "lang.switchToEn": {
+      "where": "Screen-reader label for the English option when Khmer is active.",
+      "en": "Switch to English",
+      "km": ""
+    },
+    "lang.switchToKm": {
+      "where": "Screen-reader label for the Khmer option when English is active.",
+      "en": "Switch to Khmer",
+      "km": ""
+    },
+    "theme.label": {
+      "where": "Screen-reader label of the light/dark/system theme menu button in the header.",
+      "en": "Theme",
+      "km": ""
+    },
+    "theme.light": {
+      "where": "Theme menu item that forces the light theme.",
+      "en": "Light",
+      "km": ""
+    },
+    "theme.dark": {
+      "where": "Theme menu item that forces the dark theme.",
+      "en": "Dark",
+      "km": ""
+    },
+    "theme.system": {
+      "where": "Theme menu item that follows the operating system preference (the default).",
+      "en": "System",
+      "km": ""
+    },
+    "account.label": {
+      "where": "Screen-reader label of the avatar/account menu button, and the fallback name before the profile loads.",
+      "en": "Account",
+      "km": ""
+    },
+    "account.fallbackName": {
+      "where": "Placeholder account name shown in the menu when the signed-in user has no email/name available.",
+      "en": "KruMath account",
+      "km": ""
+    },
+    "account.settings": {
+      "where": "NEW item in the account dropdown (missing today); links to krumath.com/settings.",
+      "en": "Account settings",
+      "km": ""
+    },
+    "account.signOut": {
+      "where": "Item in the account dropdown; signs out of the shared KruMath session.",
+      "en": "Log out",
+      "km": ""
+    },
+    "account.signIn": {
+      "where": "Button at the top-right shown when signed out; starts the KruMath sign-in flow.",
+      "en": "Sign In",
+      "km": ""
+    },
+    "auth.checking": {
+      "where": "Full-screen loading state while the KruMath account is being verified.",
+      "en": "Loading…",
+      "km": ""
+    },
+    "auth.redirecting": {
+      "where": "Full-screen state shown briefly before redirecting a signed-out user to the KruMath sign-in page.",
+      "en": "Redirecting to sign in…",
+      "km": ""
+    },
+    "error.notFoundTitle": {
+      "where": "Heading of the 404 page.",
+      "en": "Page not found",
+      "km": ""
+    },
+    "error.notFoundBody": {
+      "where": "Body text of the 404 page.",
+      "en": "The page you're looking for doesn't exist or has been moved.",
+      "km": ""
+    },
+    "error.loadTitle": {
+      "where": "Heading shown when a page or the app fails to load. Also used by the plain server-rendered error page.",
+      "en": "This page didn't load",
+      "km": ""
+    },
+    "error.loadBody": {
+      "where": "Body text shown when a page or the app fails to load.",
+      "en": "Something went wrong on our end. You can try refreshing or head back home.",
+      "km": ""
+    },
+    "error.tryAgain": {
+      "where": "Button that retries rendering after an error.",
+      "en": "Try again",
+      "km": ""
+    },
+    "error.goHome": {
+      "where": "Button on the 404 / error pages that returns to the game root.",
+      "en": "Go home",
+      "km": ""
+    },
+    "error.goToKruMath": {
+      "where": "Link on the plain server-rendered error page that returns to krumath.com/home.",
+      "en": "Go to KruMath",
+      "km": ""
+    }
+  }
+}
