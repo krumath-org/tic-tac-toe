@@ -1,4 +1,18 @@
+# ---------------------------------------------------------------------------
+# Dependencies and build output
+# ---------------------------------------------------------------------------
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.nitro
+.tanstack/
+.wrangler/
+
+# ---------------------------------------------------------------------------
 # Logs
+# ---------------------------------------------------------------------------
 logs
 *.log
 npm-debug.log*
@@ -7,33 +21,47 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
-*.local
-
-# Local env files — never commit real values.
+# ---------------------------------------------------------------------------
+# Environment and secrets — never commit real values.
+# `.env.example` is the only env file that belongs in the repo.
+# ---------------------------------------------------------------------------
 .env
-.env.local
 .env.*
 !.env.example
+*.local
+.envrc
+.dev.vars
+.dev.vars.*
 
-# Lockfiles — this repo uses bun.lock (npm still works per the README).
+# Credentials, keys, and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+*.cer
+credentials.json
+secrets.json
+*.secret
+*.secrets
+.npmrc
+.netrc
+
+# ---------------------------------------------------------------------------
+# Lockfiles — this repo uses bun.lock (npm still works, see the README).
+# ---------------------------------------------------------------------------
 package-lock.json
 
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
-
-# Editor directories and files
+# ---------------------------------------------------------------------------
+# Editor and OS files
+# ---------------------------------------------------------------------------
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj

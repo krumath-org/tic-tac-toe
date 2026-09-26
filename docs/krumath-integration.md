@@ -44,7 +44,8 @@ Known limitations: see "Known limitations" below
 
 ### Auth flow
 
-1. `src/features/auth/auth-context.tsx` loads the session via
+1. `src/features/auth/auth-context.ts` holds the context type, and
+   `src/features/auth/AuthProvider.tsx` loads the session via
    `supabase.auth.getSession()` and subscribes to `onAuthStateChange`.
 2. `src/features/auth/AuthGate.tsx` gates the app:
    - `checking` -> renders an SSR-safe loading shell,
