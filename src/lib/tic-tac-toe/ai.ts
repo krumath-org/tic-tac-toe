@@ -64,7 +64,13 @@ const WIN = 1_000_000;
 
 /* ---------------- exhaustive minimax (3x3 only) ---------------- */
 
-function minimax(board: Board, current: Player, me: Player, depth: number, config: BoardConfig): number {
+function minimax(
+  board: Board,
+  current: Player,
+  me: Player,
+  depth: number,
+  config: BoardConfig,
+): number {
   const win = getWinner(board, config);
   if (win) return win.player === me ? 10 - depth : depth - 10;
   if (isDraw(board, config)) return 0;
@@ -221,11 +227,7 @@ function heuristicMove(board: Board, me: Player, config: BoardConfig): number {
   return picks.length ? pick(picks) : pick(moves);
 }
 
-export function selectMove(
-  board: Board,
-  me: Player,
-  difficulty: Difficulty,
-): number | null {
+export function selectMove(board: Board, me: Player, difficulty: Difficulty): number | null {
   const config = BOARDS[difficulty];
   const moves = availableMoves(board);
   if (moves.length === 0) return null;
@@ -252,7 +254,15 @@ export function selectMove(
   let best = -Infinity;
   let picks: number[] = [];
   for (const m of candidates(board, config)) {
-    const s = negamax(applyMove(board, m, me), other(me), me, depth - 1, -Infinity, Infinity, config);
+    const s = negamax(
+      applyMove(board, m, me),
+      other(me),
+      me,
+      depth - 1,
+      -Infinity,
+      Infinity,
+      config,
+    );
     if (s > best) {
       best = s;
       picks = [m];
