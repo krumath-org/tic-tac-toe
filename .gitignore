@@ -16,6 +16,9 @@ dist-ssr
 .nitro
 *.local
 
+# Lockfiles — this repo uses bun.lock (npm still works per the README).
+package-lock.json
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
